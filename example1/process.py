@@ -1,36 +1,38 @@
 import operator
 import math
 import numpy as np
-# import pymysql.cursors
+import pymysql.cursors
 import sys
+import csv
+
 
 # 获取数据库中的数据
-# def getDbData():
-#     db = pymysql.Connect(
-#         host='localhost',
-#         port=3306,
-#         user='root',
-#         passwd='123456',
-#         db='datamining',
-#         charset='utf8'
-#     )
-#
-#     # 获取游标
-#     cursor = db.cursor()
-#
-#     # 执行SQL
-#     sql = 'select *from stu'
-#     cursor.execute(sql)
-#
-#     # 从游标中取出所有记录放到一个序列中并关闭游标
-#     res = cursor.fetchall()
-#
-#     # 结果为二维元组，需要转换为二维列表
-#     dbData = list(list(items) for items in list(res))
-#
-#     cursor.close()
-#     db.close()
-#     return dbData
+def getDbData():
+    db = pymysql.Connect(
+        host='localhost',
+        port=3306,
+        user='root',
+        passwd='123456',
+        db='datamining',
+        charset='utf8'
+    )
+
+    # 获取游标
+    cursor = db.cursor()
+
+    # 执行SQL
+    sql = 'select *from stu'
+    cursor.execute(sql)
+
+    # 从游标中取出所有记录放到一个序列中并关闭游标
+    res = cursor.fetchall()
+
+    # 结果为二维元组，需要转换为二维列表
+    dbData = list(list(items) for items in list(res))
+
+    cursor.close()
+    db.close()
+    return dbData
 
 
 # 获取txt文件里面的数据
@@ -137,22 +139,48 @@ def Process(data):
 # 数据对比以及合并
 def merge(db,txt):
     # 先让data为txt，然后再从db中拿出缺失的数据
-    data = txt
+
+    data = []
+    for i in range(len(txt)):
+        flag1 = 0
+        for j in range(len(data)):
+            if txt[i][0] == data[j][0]:
+                flag1 = 1
+                break
+        if flag1 == 0:
+            data.append(txt[i])
+
     for i in range(len(db)):
         flag = 0
+        if int(db[i][0]) < 10:
+            db[i][0] = "20200" + db[i][0]
+        elif int(db[i][0]) < 100:
+            db[i][0] = "2020" + db[i][0]
+        else:
+            db[i][0] = "202" + db[i][0]
         for j in range(len(data)):
-            if db[i][1] == data[j][1]:
+            if db[i][0] == data[j][0]:
                 flag = 1
                 break
         if flag == 0:
-            if int(db[i][0]) < 10:
-                db[i][0] = "20200" + db[i][0]
-            elif int(db[i][0]) < 100:
-                db[i][0] = "2020" + db[i][0]
-            else:
-                db[i][0] = "202" + db[i][0]
             data.append(db[i])
-    # print(len(data))
+
+
+    # for i in range(len(db)):
+    #     flag = 0
+    #     for j in range(len(data)):
+    #         if db[i][1] == data[j][1]:
+    #             flag = 1
+    #             break
+    #     if flag == 0:
+    #         if int(db[i][0]) < 10:
+    #             db[i][0] = "20200" + db[i][0]
+    #         elif int(db[i][0]) < 100:
+    #             db[i][0] = "2020" + db[i][0]
+    #         else:
+    #             db[i][0] = "202" + db[i][0]
+    #         data.append(db[i])
+
     return data
 
 # 学生中家乡在Beijing的所有课程的平均成绩
@@ -286,13 +314,22 @@ text = changeSex(text)
 text = changeHeight(text)
 
 text = Process(text)
-print(text)
+# print(text)
 
-print(relevance(text))
 
-# dbtext = getDbData()
-# dbtext = Process(dbtext)
+
+dbtext = getDbData()
+dbtext = Process(dbtext)
 # print(len(dbtext))
-# data = merge(dbtext, text)
-# print(data)
+data = merge(dbtext, text)
+print(len(data))
 # print(conGZandSH(data))
+
+
+# print(relevance(text))
+
+f = open('data3.csv', 'w', newline='')
+writer = csv.writer(f)
+for i in data:
+    writer.writerow(i)
+f.close()
