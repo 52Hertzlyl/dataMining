@@ -325,8 +325,25 @@ dbtext = getDbData()
 dbtext = Process(dbtext)
 data = merge(dbtext, text)
 
-print("学生中家乡在Beijing的所有课程的平均成绩:", bjAvgGrade(data))
-print("学生中家乡在广州，课程1在80分以上，且课程9在9分以上的男同学的数量:", gz(data))
-print("比较广州和上海两地女生的平均体能测试成绩，哪个地区的更强些:", conGZandSH(data))
-print("学习成绩和体能测试成绩，两者的相关性是多少？\n", relevance(data))
+for j in range(len(data)):
+    if data[j][15] == 'bad':
+        data[j][15] = '25'
+    elif data[j][15] == 'general':
+        data[j][15] = '50'
+    elif data[j][15] == 'good':
+         data[j][15] = '75'
+    elif data[j][15] == 'excellent':
+        data[j][15] = '100'
+
+f = open('data4.csv', 'w', newline='')
+writer = csv.writer(f)
+writer.writerow(['ID', 'Name', 'City', 'Gender', 'Height', 'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9', 'C10', 'Constitution'])
+for i in data:
+    writer.writerow(i)
+f.close()
+
+# print("学生中家乡在Beijing的所有课程的平均成绩:", bjAvgGrade(data))
+# print("学生中家乡在广州，课程1在80分以上，且课程9在9分以上的男同学的数量:", gz(data))
+# print("比较广州和上海两地女生的平均体能测试成绩，哪个地区的更强些:", conGZandSH(data))
+# print("学习成绩和体能测试成绩，两者的相关性是多少？\n", relevance(data))
 
