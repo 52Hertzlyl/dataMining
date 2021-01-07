@@ -180,7 +180,7 @@ if __name__ == '__main__':
     print(Normalized_matrix)
 
     # 保存归一化矩阵
-    np.savetxt('归一化矩阵.csv', Normalized_matrix, delimiter=',')
+    np.savetxt('qqq.csv', Normalized_matrix, delimiter=',')
 
     # 第4.5题
     score_array = []  # 106个同学所有成绩的矩阵 106*106
