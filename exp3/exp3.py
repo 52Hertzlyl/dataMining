@@ -6,6 +6,12 @@ import numpy as np
 
 # 计算该簇的平均值得到新的簇点
 def avg(x):
+    """
+
+    :param x:该簇所有的坐标点
+    :return: 得出一个平均值的坐标
+    """
+    # 分别对x,y求和再求平均值
     sum1 = 0
     sum2 = 0
     for i in range(len(x)):
@@ -20,8 +26,8 @@ def avg(x):
 def dis(x, y):
     """
 
-    :param x:
-    :param y:
+    :param x: 第一个坐标
+    :param y: 第二个坐标
     :return: 2个坐标之间的距离
     """
     dis1 = (x[0] - y[0]) ** 2
@@ -32,6 +38,12 @@ def dis(x, y):
 
 # 随机生成k个簇心
 def rand_heart(data, k):
+    """
+
+    :param data: 所有的数据
+    :param k: 设置的k值
+    :return: 随机返回k个数据坐标作为初始簇点
+    """
     cluster_heart = []
     # 随机在data选一个元素作为簇心
     for i in range(k):
@@ -42,6 +54,12 @@ def rand_heart(data, k):
 
 # k-means
 def k_means(data, k):
+    """
+
+    :param data:所有的数据
+    :param k: 设置的k值
+    :return: 每个的簇点坐标和每个点的一个数组，里面包含每个点属于哪个簇和离它自己簇的距离
+    """
     # 数据行的数目
     m = len(data)
 
@@ -91,8 +109,17 @@ def k_means(data, k):
 
 # 画图
 def show(data, k, cluster_heart, point_to_cluster):
+    """
+
+    :param data:全部的数据
+    :param k: 设置的k值
+    :param cluster_heart:所有簇点的数组
+    :param point_to_cluster: 每个的簇点坐标和每个点的一个数组，里面包含每个点属于哪个簇和离它自己簇的距离
+    :return: 没有返回值
+    """
     # 计算行数
     m = len(data)
+    # 给数据点设置样式
     mark = ['or', 'ob', 'og', 'ok', 'oy', 'om']
 
     # 绘制所有的点
@@ -101,11 +128,11 @@ def show(data, k, cluster_heart, point_to_cluster):
         plt.plot(data[i][0], data[i][1], mark[markIndex])
 
     theta = np.arange(0, 2 * np.pi, 0.01)
-
+    # 给簇点设置样式
     mark = ['Dr', 'Db', 'Dg', 'Dk', 'Dy', 'Dm']
+    # 给半径设置颜色
     color = ['r', 'b', 'g', 'k', 'y']
     # 绘制簇心
-    print(len(point_to_cluster))
     for i in range(k):
         r = 0
         plt.plot(cluster_heart[i][0], cluster_heart[i][1], mark[i])
@@ -116,7 +143,7 @@ def show(data, k, cluster_heart, point_to_cluster):
         r = pow(r, 0.5)
         plt.plot(cluster_heart[i][0] + r * np.cos(theta), cluster_heart[i][1] + r * np.sin(theta), color[i])
     png_name = "测试数据：k等于%i的聚类.png" % k
-    plt.savefig(png_name, format='png')
+    # plt.savefig(png_name, format='png')
     plt.show()
 
 
@@ -134,7 +161,7 @@ with open('测试数据.csv', 'r') as f:
         normal_list.append(temp)
 
 # 设置K值
-k = 5
+k = 2
 # 聚类算法
 cluser_heart, point_to_cluster = k_means(normal_list, k)
 # 画图函数

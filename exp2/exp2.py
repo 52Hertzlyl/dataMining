@@ -11,6 +11,11 @@ plt.rcParams['axes.unicode_minus'] = False  # 正常显示负号
 
 # 计算某一行的平均值
 def calc_mean(x):
+    """
+
+    :param x:传入列表的某一行
+    :return: 返回该行的平均值
+    """
     lens = len(x)
     total = 0
     for i in range(lens):
@@ -21,6 +26,12 @@ def calc_mean(x):
 
 # 计算E(ab)
 def calc_Eab(a, b):
+    """
+
+    :param a:
+    :param b:
+    :return:
+    """
     lens = len(a)
     total = 0
     for i in range(lens):
@@ -30,12 +41,23 @@ def calc_Eab(a, b):
 
 
 def square(x):
+    """
+
+    :param x:传入一个数组
+    :return: 返回数组的平方
+    """
     res = x ** 2
     return res
 
 
 # 计算a和b的协方差
 def calc_corr(a, b):
+    """
+
+    :param a:a学生成绩
+    :param b:b学生成绩
+    :return: a和b的协方差
+    """
     # 计算E(a) E(b) E(ab)
     E_a = calc_mean(a)
     E_b = calc_mean(b)
@@ -57,6 +79,12 @@ def calc_corr(a, b):
 
 # 冒泡排序 从大到小
 def bubble_sort(data, id):
+    """
+
+    :param data:归一化矩阵
+    :param id: id矩阵
+    :return: 排序后的归一化矩阵，id矩阵也跟着一起排序
+    """
     for i in range(0, len(data) - 1):
         for j in range(0, len(data) - i - 1):
             if data[j] < data[j + 1]:
@@ -180,7 +208,7 @@ if __name__ == '__main__':
     print(Normalized_matrix)
 
     # 保存归一化矩阵
-    np.savetxt('qqq.csv', Normalized_matrix, delimiter=',')
+    np.savetxt('归一化.csv', Normalized_matrix, delimiter=',')
 
     # 第4.5题
     score_array = []  # 106个同学所有成绩的矩阵 106*106
