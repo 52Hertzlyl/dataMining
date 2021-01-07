@@ -8,6 +8,10 @@ import csv
 
 # 获取数据库中的数据
 def getDbData():
+    """
+
+    :return: 返回从数据库中获取的结果
+    """
     db = pymysql.Connect(
         host='localhost',
         port=3306,
@@ -37,6 +41,10 @@ def getDbData():
 
 # 获取txt文件里面的数据
 def getTxtData():
+    """
+
+    :return: 返回从txt文件里面获取的结果
+    """
     file1 = open("data2.txt", "r")
     next(file1)
     list_row = file1.readlines()
@@ -49,6 +57,11 @@ def getTxtData():
 
 # 把female和male改为boy和girl
 def changeSex(data):
+    """
+
+    :param data: 整个数据
+    :return: 把female和male改为boy和girl后的数据
+    """
     for i in range(len(data)):
         if data[i][3] == 'male':
             data[i][3] = 'boy'
@@ -58,12 +71,22 @@ def changeSex(data):
 
 # 把身高改为cm做单位
 def changeHeight(data):
+    """
+
+    :param data: 整个数据
+    :return: 把身高改为cm做单位后的数据
+    """
     for i in range(len(data)):
         data[i][4] = str(round(float(data[i][4]) * 100))
     return data
 
 # 数据处理
 def Process(data):
+    """
+
+    :param data: 整个数据
+    :return: 处理完毕的数据
+    """
     # 先算出平均身高以及课程的平均成绩，用来填补空缺
 
     avg = []
@@ -138,6 +161,14 @@ def Process(data):
 
 # 数据对比以及合并
 def merge(db,txt):
+
+    """
+
+    :param db: 从数据库中获取的数据
+    :param txt: 从txt中获取的数据
+    :return: 合并后的数据
+    """
+
     # 先让data为txt，然后再从db中拿出缺失的数据
 
     data = []
@@ -185,6 +216,13 @@ def merge(db,txt):
 
 # 学生中家乡在Beijing的所有课程的平均成绩
 def bjAvgGrade(data):
+
+    """
+
+    :param data: 清洗好的数据
+    :return: 学生中家乡在Beijing的所有课程的平均成绩
+    """
+
     total = 0
     for i in range(len(data)):
         for j in range(9):
@@ -194,6 +232,11 @@ def bjAvgGrade(data):
 
 # 学生中家乡在广州，课程1在80分以上，且课程9在9分以上的男同学的数量
 def gz(data):
+    """
+
+    :param data: 清洗好的数据
+    :return: 学生中家乡在广州，课程1在80分以上，且课程9在9分以上的男同学的数量
+    """
     count = 0
     for i in range(len(data)):
         if data[i][2] == 'Guangzhou' and int(data[i][5]) > 80 and int(data[i][13]) >= 9 and data[i][3] == 'boy':
@@ -202,6 +245,11 @@ def gz(data):
 
 # 比较广州和上海两地女生的平均体能测试成绩，哪个地区的更强些
 def conGZandSH(data):
+    """
+
+    :param data: 清洗好的数据
+    :return: 比较广州和上海两地女生的平均体能测试成绩，哪个地区的更强些
+    """
     gz = 0
     sh = 0
     for i in range(len(data)):
@@ -232,6 +280,11 @@ def conGZandSH(data):
 
 # 学习成绩和体能测试成绩，两者的相关性是多少？
 def relevance(data):
+    """
+
+    :param data: 清洗好的数据
+    :return: 学习成绩和体能测试成绩，两者的相关性
+    """
     result = []
     for i in range(5,14):
         # 先算出成绩平均值
@@ -306,6 +359,11 @@ def relevance(data):
     return result
 
 def writeCsv(data):
+    """
+
+    :param data: 把清洗好的数据写入csv文件
+    :return: Null
+    """
     f = open('data3.csv', 'w', newline='')
     writer = csv.writer(f)
     for i in data:
@@ -342,8 +400,8 @@ for i in data:
     writer.writerow(i)
 f.close()
 
-# print("学生中家乡在Beijing的所有课程的平均成绩:", bjAvgGrade(data))
-# print("学生中家乡在广州，课程1在80分以上，且课程9在9分以上的男同学的数量:", gz(data))
-# print("比较广州和上海两地女生的平均体能测试成绩，哪个地区的更强些:", conGZandSH(data))
-# print("学习成绩和体能测试成绩，两者的相关性是多少？\n", relevance(data))
+print("学生中家乡在Beijing的所有课程的平均成绩:", bjAvgGrade(data))
+print("学生中家乡在广州，课程1在80分以上，且课程9在9分以上的男同学的数量:", gz(data))
+print("比较广州和上海两地女生的平均体能测试成绩，哪个地区的更强些:", conGZandSH(data))
+print("学习成绩和体能测试成绩，两者的相关性是多少？\n", relevance(data))
 
