@@ -1,11 +1,4 @@
 # encoding: utf-8
-"""
-@author: 黄思豪
-@contact: 1057434651@qq.com
-@time: 2021/1/6 20:31
-@file: pca.py
-@desc: 用于将10维归一化矩阵的数据降到2维
-"""
 from sklearn.decomposition import PCA
 from pandas.core.frame import DataFrame
 import numpy as np
