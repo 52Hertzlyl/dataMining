@@ -161,9 +161,23 @@ with open('测试数据.csv', 'r') as f:
         normal_list.append(temp)
 
 # 设置K值
-k = 2
+k = 5
 # 聚类算法
 cluser_heart, point_to_cluster = k_means(normal_list, k)
 # 画图函数
 show(normal_list, k, cluser_heart, point_to_cluster)
 
+# 问题：找到聚类中心后，判断(2,6)是属于哪一类？
+dot = [2.0, 6.0]
+s = 100000.0
+index = 100
+for i in range(len(cluser_heart)):
+    dist = dis(cluser_heart[i], dot)
+    if dist < s:
+        s = dist
+        index = i
+color = ['红色', '蓝色', '绿色', '黑色', '黄色']
+print("当k等于%i时" % k)
+print("离坐标[2,6]最近的簇点是", index)
+print("所属簇的颜色为%s" % color[index])
+print("该簇点的坐标为：", cluser_heart[index])
